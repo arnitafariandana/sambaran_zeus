@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zeus Thunder Match</title>
+
+<style>
+body{
+margin:0;
+background:linear-gradient(#0b1029,#1b245f,#111);
+font-family:Arial;
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+h1{
+margin:10px;
+font-size:28px;
+color:#ffd54f;
+text-shadow:0 0 15px gold;
+}
+
+.top{
+display:flex;
+justify-content:space-around;
+font-size:18px;
+font-weight:bold;
+margin-bottom:8px;
+}
+
+canvas{
+background:rgba(255,255,255,.05);
+border:2px solid #4fc3f7;
+border-radius:20px;
+box-shadow:0 0 20px #2196f3;
+touch-action:none;
+}
+
+button{
+padding:12px 25px;
+margin-top:10px;
+border:none;
+border-radius:12px;
+background:#2196f3;
+color:white;
+font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚡ ZEUS THUNDER MATCH ⚡</h1>
+
+<div class="top">
+<div>Score: <span id=score>0</span></div>
+<div>High: <span id=high>0</span></div>
+</div>
+
+<canvas id="game"></canvas>
+<br>
+<button onclick="resetGame()">Restart</button>
+
+<script>
+
+const c=document.getElementById("game");
+const x=c.getContext("2d");
+
+const size=8;
+const tile=60;
+
+c.width=size*tile;
+c.height=size*tile;
+
+let score=0;
+
+let high=localStorage.highZeus||0;
+highText();
+
+const icons=[
+"⚡",
+"👑",
+"💎",
+"☁️",
+"🔱"
+];
+
+let board=[];
+
+function highText(){
+document.getElementById("high").innerText=high;
+}
+
+function scoreText(){
+document.getElementById("score").innerText=score;
+}
+
+function createBoard(){
+
+board=[];
+
+for(let y=0;y<size;y++){
+
+board[y]=[];
+
+for(let x=0;x<size;x++){
+
+board[y][x]=randomIcon();
+
+}
+
+}
+
+}
+
+function randomIcon(){
+
+return icons[
+Math.floor(Math.random()*icons.length)
+];
+
+}
+
+function draw(){
+
+x.clearRect(0,0,c.width,c.height);
+
+for(let y=0;y<size;y++){
+
+for(let xx=0;xx<size;xx++){
+
+x.fillStyle=
+"rgba(255,255,255,.1)";
+
+x.fillRect(
+xx*tile,
+y*tile,
+tile-2,
+tile-2
+);
+
+x.font="35px Arial";
+
+x.textAlign="center";
+
+x.fillText(
+board[y][xx],
+xx*tile+30,
+y*tile+42
+);
+
+}
+
+}
+
+}
+
+function findMatches(){
+
+let remove=[];
+
+for(let y=0;y<size;y++){
+
+let count=1;
+
+for(let x1=1;x1<size;x1++){
+
+if(board[y][x1]==board[y][x1-1]){
+
+count++;
+
+}else{
+
+if(count>=3){
+
+for(let k=0;k<count;k++){
+
+remove.push(
+[x1-1-k,y]
+);
+
+}
+
+}
+
+count=1;
+
+}
+
+}
+
+if(count>=3){
+
+for(let k=0;k<count;k++){
+
+remove.push(
+[size-1-k,y]
+);
+
+}
+
+}
+
+}
+
+for(let x1=0;x1<size;x1++){
+
+let count=1;
+
+for(let y=1;y<size;y++){
+
+if(board[y][x1]==board[y-1][x1]){
+
+count++;
+
+}else{
+
+if(count>=3){
+
+for(let k=0;k<count;k++){
+
+remove.push(
+[x1,y-1-k]
+);
+
+}
+
+}
+
+count=1;
+
+}
+
+}
+
+if(count>=3){
+
+for(let k=0;k<count;k++){
+
+remove.push(
+[x1,size-1-k]
+);
+
+}
+
+}
+
+}
+
+return remove;
+
+}
+
+
+function destroy(){
+
+let m=findMatches();
+
+if(m.length==0)return;
+
+m.forEach(p=>{
+
+board[p[1]][p[0]]=null;
+
+score+=10;
+
+});
+
+scoreText();
+
+if(score>high){
+
+high=score;
+localStorage.highZeus=high;
+highText();
+
+}
+
+gravity();
+
+setTimeout(destroy,200);
+
+}
+
+function gravity(){
+
+for(let x1=0;x1<size;x1++){
+
+for(let y=size-1;y>=0;y--){
+
+if(board[y][x1]==null){
+
+for(let yy=y;yy>0;yy--){
+
+board[yy][x1]=
+board[yy-1][x1];
+
+}
+
+board[0][x1]=randomIcon();
+
+}
+
+}
+
+}
+
+draw();
+
+}
+
+let first=null;
+
+c.addEventListener("click",e=>{
+
+let rect=
+c.getBoundingClientRect();
+
+let x1=
+Math.floor(
+(e.clientX-rect.left)/tile
+);
+
+let y1=
+Math.floor(
+(e.clientY-rect.top)/tile
+);
+
+if(!first){
+
+first={x:x1,y:y1};
+
+return;
+
+}
+
+let dx=
+Math.abs(
+first.x-x1
+);
+
+let dy=
+Math.abs(
+first.y-y1
+);
+
+if(dx+dy==1){
+
+swap(
+first.x,
+first.y,
+x1,
+y1
+);
+
+destroy();
+
+}
+
+first=null;
+
+});
+
+function swap(x1,y1,x2,y2){
+
+let t=
+board[y1][x1];
+
+board[y1][x1]=
+board[y2][x2];
+
+board[y2][x2]=t;
+
+draw();
+
+}
+
+function resetGame(){
+
+score=0;
+scoreText();
+createBoard();
+draw();
+
+setTimeout(destroy,300);
+
+}
+
+createBoard();
+draw();
+setTimeout(destroy,300);
+
+</script>
+</body>
+</html>
