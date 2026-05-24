@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>Zeus Help Center</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+
+background:
+linear-gradient(
+180deg,
+#09102e,
+#111d4d,
+#09102e
+);
+
+color:white;
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+}
+
+/* animasi bg */
+
+.bg{
+
+position:fixed;
+
+width:100%;
+height:100%;
+
+z-index:-2;
+
+animation:bg 12s linear infinite;
+
+}
+
+@keyframes bg{
+
+0%{
+filter:hue-rotate(0deg)
+}
+
+100%{
+filter:hue-rotate(40deg)
+}
+
+}
+
+
+.flash{
+
+position:absolute;
+
+width:4px;
+
+height:120px;
+
+background:white;
+
+opacity:0;
+
+box-shadow:
+0 0 30px cyan,
+0 0 80px cyan;
+
+animation:light 5s infinite;
+
+}
+
+@keyframes light{
+
+0%,94%,100%{
+opacity:0
+}
+
+95%{
+opacity:1
+}
+
+}
+
+
+.header{
+
+text-align:center;
+
+padding:30px;
+
+}
+
+.header h1{
+
+font-size:30px;
+
+text-shadow:
+0 0 15px gold;
+
+}
+
+.header p{
+
+opacity:.8;
+
+margin-top:8px;
+
+}
+
+
+.card{
+
+width:92%;
+
+margin:auto;
+
+margin-bottom:18px;
+
+padding:18px;
+
+border-radius:25px;
+
+background:
+rgba(255,255,255,.08);
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 0 20px rgba(0,200,255,.4);
+
+}
+
+.title{
+
+font-size:22px;
+
+color:#ffd54f;
+
+margin-bottom:12px;
+
+}
+
+.item{
+
+padding:12px;
+
+margin-top:10px;
+
+border-radius:15px;
+
+background:
+rgba(255,255,255,.05);
+
+}
+
+.item b{
+
+color:#4fc3f7;
+
+}
+
+.btns{
+
+padding:30px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+button{
+
+padding:16px;
+
+border:none;
+
+border-radius:50px;
+
+font-size:18px;
+
+font-weight:bold;
+
+color:white;
+
+}
+
+.contact{
+
+background:
+linear-gradient(
+45deg,
+#2196f3,
+#00bcd4
+);
+
+}
+
+.report{
+
+background:
+linear-gradient(
+45deg,
+#ff9800,
+#f44336
+);
+
+}
+
+.version{
+
+text-align:center;
+
+padding:30px;
+
+opacity:.7;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="flash"
+style="left:15%">
+</div>
+
+<div class="flash"
+style="
+left:70%;
+animation-delay:2s">
+</div>
+
+<div class="header">
+
+<h1>
+⚡ ZEUS HELP CENTER ⚡
+</h1>
+
+<p>
+Welcome to Olympus Support
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="title">
+
+🎮 Cara Bermain
+
+</div>
+
+<div class="item">
+
+Cocokkan minimal
+<b>3 simbol</b>
+yang sama.
+
+</div>
+
+<div class="item">
+
+Buat combo panjang
+untuk skor lebih besar.
+
+</div>
+
+<div class="item">
+
+Gunakan
+<b>SPIN</b>
+untuk mengacak papan.
+
+</div>
+
+<div class="item">
+
+Kumpulkan High Score
+tertinggi.
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="title">
+
+❓ FAQ
+
+</div>
+
+<div class="item">
+
+<b>Skor hilang?</b>
+
+Skor tersimpan lokal di perangkat.
+
+</div>
+
+<div class="item">
+
+<b>Game lag?</b>
+
+Tutup aplikasi lain lalu buka ulang.
+
+</div>
+
+<div class="item">
+
+<b>Data terhapus?</b>
+
+Membersihkan browser dapat menghapus data lokal.
+
+</div>
+
+<div class="item">
+
+<b>High Score tidak muncul?</b>
+
+Pastikan izin penyimpanan aktif.
+
+</div>
+
+</div>
+
+
+
+<div class="btns">
+
+<button
+class="contact"
+onclick="
+alert(
+'Support Zeus aktif'
+)
+">
+
+📩 CONTACT SUPPORT
+
+</button>
+
+
+
+<button
+class="report"
+onclick="
+alert(
+'Bug report terkirim'
+)
+">
+
+🐞 REPORT BUG
+
+</button>
+
+</div>
+
+
+
+<div class="version">
+
+Zeus Thunder Match<br>
+
+Version 1.0
+
+</div>
+
+</body>
+</html>
